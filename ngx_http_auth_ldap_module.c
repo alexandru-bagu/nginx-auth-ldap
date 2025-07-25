@@ -2029,6 +2029,7 @@ ngx_http_auth_ldap_read_handler(ngx_event_t *rev)
                     if (ber != NULL) {
                         ber_free(ber, 0);
                     }
+                    ngx_http_auth_ldap_reply_connection(c, 0, NULL);
                 } else if (ldap_msgtype(result) == LDAP_RES_SEARCH_RESULT) {
                     ngx_log_error(NGX_LOG_INFO, c->log, 0, "ngx_http_auth_ldap_read_handler: Cnx[%d] Received search result (%d: %s [%s])",
                         c->cnx_idx, error_code, ldap_err2string(error_code), error_msg ? error_msg : "-");
