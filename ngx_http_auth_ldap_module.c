@@ -2526,6 +2526,7 @@ ngx_http_auth_ldap_authenticate(ngx_http_request_t *r, ngx_http_auth_ldap_ctx_t 
 
     if (r->connection->write->timedout) {
         ngx_log_error(NGX_LOG_ERR, r->connection->log, 0, "ngx_http_auth_ldap_authenticate: Authentication timed out");
+	r->connection->write->timedout = 0;
         if (ctx->c != NULL) {
             if (ctx->server && ctx->server->clean_on_timeout) {
                 // Authentication response timeouted => Close and clean the corresponding LDAP connection
@@ -2547,7 +2548,7 @@ ngx_http_auth_ldap_authenticate(ngx_http_request_t *r, ngx_http_auth_ldap_ctx_t 
             ngx_queue_remove(&ctx->queue);
         }
 
-        return NGX_ERROR;
+        return 401;
     }
 
     /*
